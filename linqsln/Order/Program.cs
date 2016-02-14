@@ -21,6 +21,20 @@ namespace Order
             this.source = source;
             comparison = (a, b) => comparer(a).CompareTo(comparer(b));
         }
+        public MyOrderedEnumerable(IOrderingImpl<T> source,Func<T,TKey> comparer)
+        {
+            this.source = source;
+            comparison = (a, b) =>
+            {
+                int originalComparison = source.compareTo(a, b);
+                if (originalComparison != 0)
+                {
+                    return originalComparison;
+                }
+                else
+                    return comparer(a).CompareTo(comparer(b));
+            };
+        }
         public IEnumerable<T> OriginalSource
         {
             get
@@ -48,17 +62,20 @@ namespace Order
     }
     public static class Mylinq
     {
-        public static MyOrderedEnumerable<T, TKey> MyOrderBy<T, TKey>(this IEnumerable<T> source, Func<T, TKey> comparer) where TKey : IComparable<TKey>
+        public static IOrderingImpl<T> MyOrderBy<T, TKey>(this IEnumerable<T> source, Func<T, TKey> comparer) where TKey : IComparable<TKey>
         {
             return new MyOrderedEnumerable<T, TKey>(source, comparer);
         }
-
+        public static IOrderingImpl<T> MyThenBy<T,TKey>(this IOrderingImpl<T> source,Func<T,TKey> comparer) where TKey:IComparable<TKey>
+        {
+            return new MyOrderedEnumerable<T, TKey>(source, comparer);
+        }
     }
     class Program
     {
         static void Main(string[] args)
         {
-            var result = SequenceFromConsole().MyOrderBy(x =>x.Length);
+            var result = SequenceFromConsole().MyOrderBy(x =>x.Length).MyThenBy(x=> x);
             foreach (var item in result)
             {
                 Console.WriteLine(item);
