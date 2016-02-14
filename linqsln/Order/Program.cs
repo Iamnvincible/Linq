@@ -27,6 +27,7 @@ namespace Order
             comparison = (a, b) =>
             {
                 int originalComparison = source.compareTo(a, b);
+                Console.WriteLine(originalComparison+a.ToString()+"--"+b.ToString());
                 if (originalComparison != 0)
                 {
                     return originalComparison;
@@ -76,7 +77,13 @@ namespace Order
         static void Main(string[] args)
         {
             var result = SequenceFromConsole().MyOrderBy(x =>x.Length).MyThenBy(x=> x);
+            var qresult = SequenceFromConsole().MyOrderBy(x =>x.Length);
+            //SequenceFromConsole().OrderBy
             foreach (var item in result)
+            {
+                Console.WriteLine(item);
+            }
+            foreach (var item in qresult)
             {
                 Console.WriteLine(item);
             }
@@ -84,12 +91,23 @@ namespace Order
         }
         static IEnumerable<string> SequenceFromConsole()
         {
-            string a = "";
-            while (a != "done")
-            {
-                a = Console.ReadLine();
-                yield return a;
-            }
+            //string a = "";
+            //while (a != "done")
+            //{
+            //    a = Console.ReadLine();
+            //    yield return a;
+            //}
+            yield return "one";
+            yield return "two";
+            yield return "three";
+            yield return "four";
+            yield return "five";
+            yield return "six";
+            yield return "seven";
+            yield return "eight";
+            yield return "nine";
+            yield return "ten";
+            yield return "eleven";
         }
     }
 }
