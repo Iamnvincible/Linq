@@ -86,7 +86,6 @@ namespace AnyCountSum
             var reee = alist.Count(x => x.Length == 1);
             var reeee = alist.Sum(x => int.Parse(x));
             Console.ReadLine();
-
             var mre = alist.Myany();
             var mree = alist.Myany(x => x.Length == 1);
             //foreach (var item in input)
